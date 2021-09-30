@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/29 16:18:56 by javferna          #+#    #+#             */
-/*   Updated: 2021/09/30 14:58:54 by javferna         ###   ########.fr       */
+/*   Created: 2021/09/30 14:29:57 by javferna          #+#    #+#             */
+/*   Updated: 2021/09/30 16:05:34 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <fcntl.h>
+void	test(void)
+{
+	system("leaks a.out");
+}
 
-char	*get_next_line(int fd);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
+int main(void)
+{
+	int		fd;
+	int		i;
+	char	*str;
 
-#endif
+	//atexit(test);
+	fd = open("test.txt", O_RDONLY);
+	i = -1;
+	while(++i < 3)
+	{
+		str = get_next_line(fd);
+		printf("%s\n", str);
+	}
+	return (0);
+}

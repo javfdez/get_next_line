@@ -6,11 +6,39 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:48 by javferna          #+#    #+#             */
-/*   Updated: 2021/09/30 12:30:11 by javferna         ###   ########.fr       */
+/*   Updated: 2021/09/30 15:48:00 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	size_t	len;
+	int		i;
+	char	*cpy;
+
+	len = ft_strlen(s1);
+	cpy = malloc((len + 1) * sizeof(char));
+	if (!cpy)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		cpy[i] = s1[i];
+	cpy[i] = '\0';
+	return (cpy);
+}
+
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
