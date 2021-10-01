@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/09/30 16:03:20 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/01 15:32:26 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,34 +22,39 @@ static int	ft_newline(char *reading)
 	return (i);
 }
 
+static void	ft_fill_result(char *reading, char *result, int i)
+{
+	int		i;
+	char	*aux;
+	char	*aux2;
+
+	i = ft_newline(reading);
+	if (i == BUFFER_SIZE)
+	{
+	}
+}
+
 char	*get_next_line(int fd)
 {
-	static char	*reading;
+	char		*reading;
 	char		*result;
-	char		*aux;
 	int			i;
-	int			j;
 
-		result = NULL;
-	j = 0;
-	i = 0;
-	while (j == i)
+	reading = malloc((BUFFER_SIZE + 1) + sizeof(char)); //free this
+	if (!reading)
+		return (NULL);
+	result = malloc((1) + sizeof(char));
+	if (!result)
+		return (NULL);
+	reading[BUFFER_SIZE] = '\0';
+	result[0] = '\0';
+	while ()
 	{
-		reading = malloc((BUFFER_SIZE + 1) +  sizeof(char));
-		if (!reading)
-			return (NULL);
 		i = read(fd, reading, BUFFER_SIZE);
 		if (i == -1)
 			return (NULL);
-		reading[i] = '\0';
-		j = ft_newline(reading);
-		aux = ft_substr(reading, 0, j);
-		if (!result)
-			result = ft_strdup(aux);
-		else
-			result = ft_strjoin (result, aux);
-		free(aux);
-		free(reading);
+		ft_fill_result(reading, result, i);
 	}
 	return (result);
 }
+
