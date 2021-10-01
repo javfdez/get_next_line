@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/01 15:32:26 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/01 18:04:08 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int	ft_newline(char *reading)
 {
 	int	i;
 
+	if (!reading)
+		return(NULL);
 	i = 0;
 	while (reading[i] && reading[i] != '\n')
 		i++;
@@ -24,37 +26,35 @@ static int	ft_newline(char *reading)
 
 static void	ft_fill_result(char *reading, char *result, int i)
 {
-	int		i;
-	char	*aux;
-	char	*aux2;
+	static char	*temp;
 
-	i = ft_newline(reading);
-	if (i == BUFFER_SIZE)
-	{
-	}
+	if (ft_newline(reading) == BUFFER_SIZE)
+
+
 }
 
 char	*get_next_line(int fd)
 {
-	char		*reading;
-	char		*result;
+	char		reading[BUFFER_SIZE + 1];
+	char		result[1];
+	static char	*temp;
 	int			i;
+	int			j;
 
-	reading = malloc((BUFFER_SIZE + 1) + sizeof(char)); //free this
-	if (!reading)
+	if(!BUFFER_SIZE || !fd)
 		return (NULL);
-	result = malloc((1) + sizeof(char));
-	if (!result)
-		return (NULL);
+	*result = '\0';
 	reading[BUFFER_SIZE] = '\0';
-	result[0] = '\0';
-	while ()
+	i = 0;
+	while (i != BUFFER_SIZE &&------)
 	{
 		i = read(fd, reading, BUFFER_SIZE);
 		if (i == -1)
 			return (NULL);
+		j = ft_newline(reading);
+		if (j)
+			temp = ft_substr(reading, j + 1, BUFFER_SIZE - j + 1);
 		ft_fill_result(reading, result, i);
 	}
 	return (result);
 }
-
