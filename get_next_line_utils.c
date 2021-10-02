@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:48 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/01 15:15:39 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/02 13:03:03 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_strdup(const char *s1)
 	cpy[i] = '\0';
 	return (cpy);
 }
-
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {

@@ -6,35 +6,57 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/01 19:17:57 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/02 20:43:23 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_newline(char *reading)
+static int	ft_newline(char *temp)
 {
 	int	i;
 
-	if (!reading)
-		return(NULL);
 	i = 0;
-	while (reading[i] && reading[i] != '\n')
+	while (temp[i] && temp[i] != '\n')
 		i++;
 	return (i);
 }
 
-static void	ft_fill_result(char *reading, char *result, int i)
-{
-}
-
 char	*get_next_line(int fd)
 {
-	char		reading[BUFFER_SIZE + 1];
-	char		result[1];
+	char		*buf;
+	char		*aux;
+	static char	*aux2;
 	static char	*temp;
-	int			i;
+	long		i;
 
-
-	return (result);
+	if (BUFFER_SIZE < 1)
+		return (NULL);
+	buf = malloc((BUFFER_SIZE + (long)1) * sizeof(char));
+	if (!buf)
+		return (NULL);
+	i = BUFFER_SIZE;
+	while(i == BUFFER_SIZE)
+	{
+		i = read(fd, buf, BUFFER_SIZE);
+		if (i == -1)
+			return (NULL);
+		buf[i] = '\0';
+		aux = temp;
+		if(!temp)
+			temp = ft_strdup(buf);
+		else
+			temp = ft_strjoin(aux, buf);
+		i = ft_newline(buf);
+		free(aux);
+	}
+	if (!*temp)
+		return (NULL);
+	i = ft_newline(temp);
+	aux = ft_substr(temp, 0, i);
+	aux2 = temp;
+	temp = ft_substr(aux2, i + 1, ft_strlen(aux2));
+	free (aux2);
+	free (buf);
+	return (aux);
 }
