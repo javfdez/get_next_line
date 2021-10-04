@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/04 14:45:32 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/04 18:24:54 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static char	*ft_fill_line(int fd, char *aux, char *buf, char *temp)
 	while (i == BUFFER_SIZE)
 	{
 		i = read(fd, buf, BUFFER_SIZE);
-		if (i == -1)
-			return (NULL);
+		if (i == -1 || !*buf)
+			break;
 		buf[i] = '\0';
 		aux = temp;
 		if (!temp)
@@ -56,13 +56,19 @@ char	*get_next_line(int fd)
 	char		*buf;
 	long		i;
 
-	if (BUFFER_SIZE < 1)
-		return (NULL);
 	aux = NULL;
 	buf = NULL;
-	temp = ft_fill_line(fd, aux, buf, temp);
-	if (!*temp || !temp)
+	if (BUFFER_SIZE < 1 || fd < 0)
 		return (NULL);
+	temp = ft_fill_line(fd, aux, buf, temp);
+	if (!temp || !*temp)
+		return (NULL);
+	if (*temp == '\n')
+	{
+		free(temp);
+		temp = NULL;
+		return (ft_strdup("\n"));
+	}
 	i = ft_newline(temp);
 	result = ft_substr(temp, 0, i);
 	aux = temp;
