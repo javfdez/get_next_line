@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/02 20:43:23 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:45:32 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,41 +22,51 @@ static int	ft_newline(char *temp)
 	return (i);
 }
 
-char	*get_next_line(int fd)
+static char	*ft_fill_line(int fd, char *aux, char *buf, char *temp)
 {
-	char		*buf;
-	char		*aux;
-	static char	*aux2;
-	static char	*temp;
-	long		i;
+	long	i;
 
-	if (BUFFER_SIZE < 1)
-		return (NULL);
-	buf = malloc((BUFFER_SIZE + (long)1) * sizeof(char));
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
 		return (NULL);
 	i = BUFFER_SIZE;
-	while(i == BUFFER_SIZE)
+	while (i == BUFFER_SIZE)
 	{
 		i = read(fd, buf, BUFFER_SIZE);
 		if (i == -1)
 			return (NULL);
 		buf[i] = '\0';
 		aux = temp;
-		if(!temp)
+		if (!temp)
 			temp = ft_strdup(buf);
 		else
 			temp = ft_strjoin(aux, buf);
-		i = ft_newline(buf);
 		free(aux);
+		i = ft_newline(buf);
 	}
-	if (!*temp)
+	free(buf);
+	return (temp);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*temp;
+	char		*result;
+	char		*aux;
+	char		*buf;
+	long		i;
+
+	if (BUFFER_SIZE < 1)
+		return (NULL);
+	aux = NULL;
+	buf = NULL;
+	temp = ft_fill_line(fd, aux, buf, temp);
+	if (!*temp || !temp)
 		return (NULL);
 	i = ft_newline(temp);
-	aux = ft_substr(temp, 0, i);
-	aux2 = temp;
-	temp = ft_substr(aux2, i + 1, ft_strlen(aux2));
-	free (aux2);
-	free (buf);
-	return (aux);
+	result = ft_substr(temp, 0, i);
+	aux = temp;
+	temp = ft_substr(aux, i + 1, ft_strlen(aux));
+	free(aux);
+	return (result);
 }
