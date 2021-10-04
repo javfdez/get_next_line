@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/04 18:24:54 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/04 20:25:52 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,60 +19,62 @@ static int	ft_newline(char *temp)
 	i = 0;
 	while (temp[i] && temp[i] != '\n')
 		i++;
-	return (i);
+	if (temp[i] == '\n')
+		return (i);
+	return (0);
 }
 
-static char	*ft_fill_line(int fd, char *aux, char *buf, char *temp)
+static char	*ft_fill_result(char *buf, int i)
 {
-	long	i;
+	static char	*temp;
+	char		*aux;
+	char		*aux2;
 
-	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
-		return (NULL);
-	i = BUFFER_SIZE;
-	while (i == BUFFER_SIZE)
+	aux = temp;
+	if (!i)
 	{
-		i = read(fd, buf, BUFFER_SIZE);
-		if (i == -1 || !*buf)
-			break;
-		buf[i] = '\0';
-		aux = temp;
 		if (!temp)
 			temp = ft_strdup(buf);
 		else
-			temp = ft_strjoin(aux, buf);
+			temp = ft_strjoin(temp, buf);
 		free(aux);
-		i = ft_newline(buf);
+		return (temp);
 	}
-	free(buf);
-	return (temp);
+	if (!temp)
+	{
+		temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
+		return(ft_substr(buf, 0, i));
+	}
+	aux2 = ft_substr(buf, 0, i);
+	temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
+	free(aux);
+	aux = ft_strjoin(temp, aux2);
+	free(aux2);
+	return (aux);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*temp;
-	char		*result;
-	char		*aux;
-	char		*buf;
-	long		i;
+	char	*buf;
+	char	*result;
+	int		i;
 
-	aux = NULL;
-	buf = NULL;
 	if (BUFFER_SIZE < 1 || fd < 0)
 		return (NULL);
-	temp = ft_fill_line(fd, aux, buf, temp);
-	if (!temp || !*temp)
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
 		return (NULL);
-	if (*temp == '\n')
+	buf[BUFFER_SIZE] = '\0';
+	result = NULL;
+	i = 0;
+	while(!i)
 	{
-		free(temp);
-		temp = NULL;
-		return (ft_strdup("\n"));
+		i = read(fd, buf, BUFFER_SIZE);
+		if (i == -1 || i == 0 || !*buf)
+			break ;
+		i = ft_newline(buf);
+		result = ft_fill_result(buf, i);
 	}
-	i = ft_newline(temp);
-	result = ft_substr(temp, 0, i);
-	aux = temp;
-	temp = ft_substr(aux, i + 1, ft_strlen(aux));
-	free(aux);
+	free(buf);
 	return (result);
 }
