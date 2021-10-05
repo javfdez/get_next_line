@@ -6,21 +6,21 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/04 20:25:52 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/05 03:23:45 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_newline(char *temp)
+static int	ft_newline(char *buf)
 {
 	int	i;
 
 	i = 0;
-	while (temp[i] && temp[i] != '\n')
+	while (buf[i] && buf[i] != '\n')
 		i++;
-	if (temp[i] == '\n')
-		return (i);
+	if (buf[i] == '\n')
+		return (i + 1);
 	return (0);
 }
 
@@ -30,9 +30,9 @@ static char	*ft_fill_result(char *buf, int i)
 	char		*aux;
 	char		*aux2;
 
-	aux = temp;
 	if (!i)
 	{
+		aux = temp;
 		if (!temp)
 			temp = ft_strdup(buf);
 		else
@@ -43,13 +43,13 @@ static char	*ft_fill_result(char *buf, int i)
 	if (!temp)
 	{
 		temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
-		return(ft_substr(buf, 0, i));
+		return (ft_substr(buf, 0, i));
 	}
 	aux2 = ft_substr(buf, 0, i);
-	temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
-	free(aux);
 	aux = ft_strjoin(temp, aux2);
 	free(aux2);
+	free(temp);
+	temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
 	return (aux);
 }
 
@@ -67,7 +67,7 @@ char	*get_next_line(int fd)
 	buf[BUFFER_SIZE] = '\0';
 	result = NULL;
 	i = 0;
-	while(!i)
+	while (!i)
 	{
 		i = read(fd, buf, BUFFER_SIZE);
 		if (i == -1 || i == 0 || !*buf)
