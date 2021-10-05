@@ -6,75 +6,93 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/05 03:23:45 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 01:01:48 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_newline(char *buf)
+static int	ft_newline(char *temp)
 {
 	int	i;
 
+	if (!temp)
+		return (-1);
 	i = 0;
-	while (buf[i] && buf[i] != '\n')
+	while (temp[i] && temp[i] != '\n')
 		i++;
-	if (buf[i] == '\n')
-		return (i + 1);
-	return (0);
+	if (temp[i] == '\n')
+		return (i);
+	return (-1);
 }
 
-static char	*ft_fill_result(char *buf, int i)
+static char	*ft_strjoin_gnl(char *temp, char *buf)
 {
-	static char	*temp;
-	char		*aux;
-	char		*aux2;
+	char	*new_temp;
+	int		i;
+	int		j;
 
-	if (!i)
-	{
-		aux = temp;
-		if (!temp)
-			temp = ft_strdup(buf);
-		else
-			temp = ft_strjoin(temp, buf);
-		free(aux);
-		return (temp);
-	}
-	if (!temp)
-	{
-		temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
-		return (ft_substr(buf, 0, i));
-	}
-	aux2 = ft_substr(buf, 0, i);
-	aux = ft_strjoin(temp, aux2);
-	free(aux2);
-	free(temp);
-	temp = ft_substr(buf, i + 1, BUFFER_SIZE + 1);
-	return (aux);
+	if (!temp && !buf)
+		return (NULL);
+	i = 0;
+	j = 0;
+	if (temp)
+		i = ft_strlen(temp);
+	if (buf)
+		j = ft_strlen(buf);
+	new_temp = malloc((i + j + 1) * sizeof(char));
+	if (!new_temp)
+		return (NULL);
+	ft_memcpy(new_temp, temp, i);
+	ft_memcpy(new_temp + i, buf, j);
+	new_temp[i + j] = '\0';
+	if (temp)
+		free(temp);
+	return (new_temp);
+}
+
+static char	*ft_fill_result(char **temp)
+{
+	int		pos;
+	char	*ret;
+	char	*aux;
+
+	if (!*temp || !**temp)
+		return (NULL);
+	aux = *temp;
+	pos = ft_newline(*temp);
+	if (pos == -1)
+		pos = ft_strlen(*temp);
+	ret = ft_substr_gnl(*temp, 0, pos + 1);
+	*temp = ft_substr_gnl(*temp, pos + 1, ft_strlen(*temp));
+	free(aux);
+	return (ret);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buf;
-	char	*result;
-	int		i;
+	static char	*temp;
+	char		*buf;
+	int			r;
 
 	if (BUFFER_SIZE < 1 || fd < 0)
 		return (NULL);
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
-	buf[BUFFER_SIZE] = '\0';
-	result = NULL;
-	i = 0;
-	while (!i)
+	r = 1;
+	while (r && ft_newline(temp) == -1)
 	{
-		i = read(fd, buf, BUFFER_SIZE);
-		if (i == -1 || i == 0 || !*buf)
-			break ;
-		i = ft_newline(buf);
-		result = ft_fill_result(buf, i);
+		r = read(fd, buf, BUFFER_SIZE);
+		if (r == -1)
+		{
+			free(buf);
+			return(NULL);
+		}
+		buf[r] = '\0';
+		temp = ft_strjoin_gnl(temp, buf);
 	}
 	free(buf);
-	return (result);
+	buf = ft_fill_result(&temp);
+	return (buf);
 }

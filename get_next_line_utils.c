@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:48 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/04 16:23:31 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 00:17:31 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_strdup(const char *s1)
 	return (cpy);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr_gnl(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
 	size_t	i;
@@ -48,7 +48,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start > ft_strlen(s))
-		return (ft_strdup(""));
+		return (NULL);
 	n = ft_strlen(&s[start]);
 	if (len > n)
 		len = n;
@@ -62,27 +62,18 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (substr);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char	*str;
-	int		i;
-	int		j;
+	const char	*cast_src;
+	char		*cast_dst;
+	size_t		i;
 
-	if (!s1 && !s2)
+	if (src == NULL && dst == NULL)
 		return (NULL);
-	if (!s1)
-		return ((char *)s2);
-	if (!s2)
-		return ((char *)s1);
-	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (! str)
-		return (NULL);
+	cast_src = src;
+	cast_dst = dst;
 	i = -1;
-	while (s1[++i])
-		str[i] = s1[i];
-	j = 0;
-	while (s2[j])
-		str[i++] = s2[j++];
-	str[i] = '\0';
-	return (str);
+	while (++i < n)
+		cast_dst[i] = cast_src[i];
+	return (dst);
 }
