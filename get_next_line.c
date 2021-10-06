@@ -6,22 +6,22 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/06 01:01:48 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 13:17:53 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_newline(char *temp)
+static int	ft_newline(char *str)
 {
 	int	i;
 
-	if (!temp)
+	if (!str)
 		return (-1);
 	i = 0;
-	while (temp[i] && temp[i] != '\n')
+	while (str[i] && str[i] != '\n')
 		i++;
-	if (temp[i] == '\n')
+	if (str[i] == '\n')
 		return (i);
 	return (-1);
 }
@@ -57,8 +57,14 @@ static char	*ft_fill_result(char **temp)
 	char	*ret;
 	char	*aux;
 
-	if (!*temp || !**temp)
+	if (!*temp)
 		return (NULL);
+	if (!**temp)
+	{
+		free(*temp);
+		*temp = NULL;
+		return (NULL);
+	}
 	aux = *temp;
 	pos = ft_newline(*temp);
 	if (pos == -1)
@@ -81,14 +87,12 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	r = 1;
-	while (r && ft_newline(temp) == -1)
+	*buf = '\0';
+	while (r && ft_newline(buf) == -1)
 	{
 		r = read(fd, buf, BUFFER_SIZE);
 		if (r == -1)
-		{
-			free(buf);
-			return(NULL);
-		}
+			break ;
 		buf[r] = '\0';
 		temp = ft_strjoin_gnl(temp, buf);
 	}
