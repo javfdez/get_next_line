@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:48 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/06 00:17:31 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:53:32 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,41 +39,14 @@ char	*ft_strdup(const char *s1)
 	return (cpy);
 }
 
-char	*ft_substr_gnl(char const *s, unsigned int start, size_t len)
+char	*ft_strchr(const char *s, int c)
 {
-	char	*substr;
-	size_t	i;
-	size_t	n;
+	int	i;
 
-	if (!s)
-		return (NULL);
-	if (start > ft_strlen(s))
-		return (NULL);
-	n = ft_strlen(&s[start]);
-	if (len > n)
-		len = n;
-	substr = malloc((len + 1) * sizeof(char));
-	if (!substr)
-		return (NULL);
 	i = 0;
-	while (s[start] && i < len)
-		substr[i++] = s[start++];
-	substr[i] = '\0';
-	return (substr);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	const char	*cast_src;
-	char		*cast_dst;
-	size_t		i;
-
-	if (src == NULL && dst == NULL)
+	while (s[i] && s[i] != (char)c)
+		i++;
+	if (!s[i] && (char)c != '\0')
 		return (NULL);
-	cast_src = src;
-	cast_dst = dst;
-	i = -1;
-	while (++i < n)
-		cast_dst[i] = cast_src[i];
-	return (dst);
+	return ((char *)&s[i]);
 }
