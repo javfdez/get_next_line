@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/06 16:55:11 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 17:01:06 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_strjoin_gnl(char *temp, char *buf)
 {
@@ -79,7 +79,7 @@ static char	*ft_fill_result(char **temp)
 
 char	*get_next_line(int fd)
 {
-	static char	*temp;
+	static char	*temp[MAX_FD];
 	char		*buf;
 	int			r;
 
@@ -89,17 +89,17 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	r = 1;
-	while (r && (!temp || !ft_strchr(temp, '\n')))
+	while (r && (!temp[fd] || !ft_strchr(temp[fd], '\n')))
 	{
 		r = read(fd, buf, BUFFER_SIZE);
 		if (r == -1)
 			break ;
 		buf[r] = '\0';
-		if (!temp)
-			temp = ft_strdup(buf);
+		if (!temp[fd])
+			temp[fd] = ft_strdup(buf);
 		else
-			temp = ft_strjoin_gnl(temp, buf);
+			temp[fd] = ft_strjoin_gnl(temp[fd], buf);
 	}
 	free(buf);
-	return (ft_fill_result(&temp));
+	return (ft_fill_result(&temp[fd]));
 }
