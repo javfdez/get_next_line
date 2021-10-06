@@ -6,12 +6,12 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:56 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/06 16:59:51 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/06 17:07:48 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 # define MAX_FD 12288
 
 # include <unistd.h>
