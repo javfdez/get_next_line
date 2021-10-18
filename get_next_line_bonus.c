@@ -6,7 +6,7 @@
 /*   By: javferna <javferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:18:32 by javferna          #+#    #+#             */
-/*   Updated: 2021/10/06 17:01:06 by javferna         ###   ########.fr       */
+/*   Updated: 2021/10/18 12:34:44 by javferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_next_line(int fd)
 	char		*buf;
 	int			r;
 
-	if (BUFFER_SIZE < 1 || fd < 0)
+	if (BUFFER_SIZE < 1 || (fd < 0 && fd > MAX_FD))
 		return (NULL);
 	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
