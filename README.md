@@ -51,5 +51,5 @@ Simply call this function and send the `fd` of the desired file to read as a par
 # Status, grade and observations
 
 - Status: Finished.
-- Grade: This project was graded with a 125%.
+- Grade: [![jaeskim's 42Project Score](https://badge42.herokuapp.com/api/project/javferna/Get_Next_Line)](https://github.com/JaeSeoKim/badge42)
 - Observations: None.
