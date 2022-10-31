@@ -47,9 +47,3 @@ This was simply done by adding a define to the [get_next_line_bonus.h](https://g
 # How to use
 
 Simply call this function and send the `fd` of the desired file to read as a parameter. You can obtain the `fd` by using the `open(2)` function or by using others predefined by the system, i.e. if `fd = 0`, `get_next_line` will read from the standard input.
-
-# Status, grade and observations
-
-- Status: Finished.
-- Grade: [![jaeskim's 42Project Score](https://badge42.herokuapp.com/api/project/javferna/get_next_line)](https://github.com/JaeSeoKim/badge42)
-- Observations: None.
