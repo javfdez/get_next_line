@@ -1,5 +1,7 @@
 # Get Next Line
 
+![42 School](https://img.shields.io/badge/42%20School-Project-blue)
+
 # What is GNL?
 
 *GNL is a project aimed to improve my understanding of static variables.*
